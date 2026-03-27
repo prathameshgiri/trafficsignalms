@@ -1,0 +1,19 @@
+{
+  "name": "smart-traffic-signal-control-system",
+  "version": "1.0.0",
+  "description": "AI-Powered Smart Traffic Signal Control System",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "nodemon server/app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "author": "Divya Swami",
+  "license": "MIT"
+}

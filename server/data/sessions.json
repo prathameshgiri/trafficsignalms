@@ -1,0 +1,23 @@
+{
+  "63ba25a8eb67e92e02f4e7718df8f172aa7f37e521019f029056601cbab1f0d2": {
+    "userId": 1,
+    "username": "admin",
+    "name": "System Administrator",
+    "role": "admin",
+    "createdAt": "2026-03-27T08:57:19.217Z"
+  },
+  "320c79222dabda25e701f730a544696f4879249d49f4d3d0f1fcaf6fddf0414d": {
+    "userId": 1,
+    "username": "admin",
+    "name": "System Administrator",
+    "role": "admin",
+    "createdAt": "2026-03-27T09:19:13.474Z"
+  },
+  "3a3c83ba11e05aabb4f913be0a6e73fa889f7b96f8a4f8aa513d15a08abe954b": {
+    "userId": 1,
+    "username": "admin",
+    "name": "System Administrator",
+    "role": "admin",
+    "createdAt": "2026-03-27T09:58:52.017Z"
+  }
+}

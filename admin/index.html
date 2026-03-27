@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel — Smart Traffic Control System</title>
+  <meta name="description" content="Admin dashboard for Smart Traffic Signal Control System." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="light-mode">
+
+  <!-- ── Loader ── -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="admin-spinner"></div>
+      <p>Loading Admin Panel…</p>
+    </div>
+  </div>
+
+  <!-- ── Toast ── -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- ═══ CRUD MODAL ═══ -->
+  <div id="crudModal" class="modal-overlay">
+    <div class="modal-card glass">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add Record</h3>
+        <button class="icon-btn" onclick="closeModal()">✕</button>
+      </div>
+      <div class="form-group">
+        <label>Intersection Name *</label>
+        <input type="text" id="m-intersection" class="ctrl-input" placeholder="e.g. MG Road Junction" />
+      </div>
+      <div class="modal-row">
+        <div class="form-group">
+          <label>Zone</label>
+          <select id="m-zone" class="ctrl-select">
+            <option>Zone A</option><option>Zone B</option>
+            <option>Zone C</option><option>Zone D</option><option>Zone E</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Density</label>
+          <select id="m-density" class="ctrl-select">
+            <option value="low">🟢 Low</option>
+            <option value="medium" selected>🟡 Medium</option>
+            <option value="high">🔴 High</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-row">
+        <div class="form-group">
+          <label>Vehicle Count</label>
+          <input type="number" id="m-vehicles" class="ctrl-input" placeholder="0" min="0" />
+        </div>
+        <div class="form-group">
+          <label>Avg Speed (km/h)</label>
+          <input type="number" id="m-speed" class="ctrl-input" placeholder="0" min="0" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-outline-sm" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" id="modalSaveBtn" onclick="saveRecord()">💾 Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ LOGIN SCREEN ═══ -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card glass">
+      <div class="login-logo">🚦</div>
+      <h1>Admin Panel</h1>
+      <p>Smart Traffic Signal Control System</p>
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="admin" autocomplete="username" />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-primary w-full" id="loginBtn">🔐 Login</button>
+        <p class="hint-text">Hint: admin / admin123 &nbsp;|&nbsp; divya / divya123</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══ ADMIN APP ═══ -->
+  <div id="adminApp" style="display:none">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-brand">
+        <span>🚦</span>
+        <span>SmartTraffic</span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-section="dashboard" onclick="switchSection('dashboard',this)">
+          📊 Dashboard
+        </button>
+        <button class="nav-item" data-section="signals" onclick="switchSection('signals',this)">
+          🚦 Signal Control
+        </button>
+        <button class="nav-item" data-section="monitor" onclick="switchSection('monitor',this)">
+          📡 Live Monitor
+        </button>
+        <button class="nav-item" data-section="ai" onclick="switchSection('ai',this)">
+          🧠 AI Control
+        </button>
+        <button class="nav-item" data-section="messages" onclick="switchSection('messages',this)">
+          📩 Messages <span class="badge-count" id="unreadBadge"></span>
+        </button>
+        <button class="nav-item" data-section="settings" onclick="switchSection('settings',this)">
+          ⚙️ Settings
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="admin-info">
+          <span class="admin-avatar">👤</span>
+          <div>
+            <p class="admin-name" id="adminName">Admin</p>
+            <p class="admin-role">System Administrator</p>
+          </div>
+        </div>
+        <button class="btn btn-outline-sm w-full" id="logoutBtn">🚪 Logout</button>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+      <!-- Topbar -->
+      <div class="topbar glass">
+        <button class="icon-btn" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-title" id="topbarTitle">Dashboard</div>
+        <div class="topbar-actions">
+          <span class="live-badge">🔴 LIVE</span>
+          <button id="darkToggle" class="icon-btn" title="Toggle dark mode">🌙</button>
+          <a href="http://localhost:3000" target="_blank" class="btn btn-outline-sm">🌐 User Panel</a>
+        </div>
+      </div>
+
+      <!-- ─ DASHBOARD ─ -->
+      <section id="sec-dashboard" class="admin-section active">
+        <div class="section-heading">
+          <h2>System Dashboard</h2>
+          <p>Live overview of the Smart Traffic Control System</p>
+        </div>
+
+        <!-- 6 KPI Cards -->
+        <div class="kpi-grid">
+          <div class="kpi-card glass">
+            <div class="kpi-icon">📦</div>
+            <div class="kpi-data"><p>Total Records</p><h3 id="kpi-records">—</h3></div>
+          </div>
+          <div class="kpi-card glass">
+            <div class="kpi-icon">🔴</div>
+            <div class="kpi-data"><p>High Traffic</p><h3 id="kpi-high">—</h3></div>
+          </div>
+          <div class="kpi-card glass">
+            <div class="kpi-icon">🚗</div>
+            <div class="kpi-data"><p>Total Vehicles</p><h3 id="kpi-vehicles">—</h3></div>
+          </div>
+          <div class="kpi-card glass">
+            <div class="kpi-icon">⚡</div>
+            <div class="kpi-data"><p>Avg Speed</p><h3 id="kpi-avgspd">—</h3></div>
+          </div>
+          <div class="kpi-card glass">
+            <div class="kpi-icon">📩</div>
+            <div class="kpi-data"><p>Messages</p><h3 id="kpi-msgs">—</h3></div>
+          </div>
+          <div class="kpi-card glass">
+            <div class="kpi-icon">🧠</div>
+            <div class="kpi-data"><p>AI Status</p><h3 id="kpi-ai">—</h3></div>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="dash-charts">
+          <div class="chart-card glass">
+            <h3>Traffic Density Distribution</h3>
+            <canvas id="adminPieChart"></canvas>
+          </div>
+          <div class="chart-card glass">
+            <h3>Total Vehicles by Zone</h3>
+            <canvas id="adminBarChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Signal Status Bar -->
+        <div class="signal-status-bar glass">
+          <span>Current Signal:</span>
+          <span id="dashSignal" class="badge badge-green">Loading…</span>
+          <span style="flex:1"></span>
+          <span>Green: <strong id="dashGreen">—</strong></span>
+          <span>Yellow: <strong id="dashYellow">—</strong></span>
+          <span>Red: <strong id="dashRed">—</strong></span>
+        </div>
+      </section>
+
+      <!-- ─ SIGNAL CONTROL ─ -->
+      <section id="sec-signals" class="admin-section">
+        <div class="section-heading">
+          <h2>Signal Control Panel</h2>
+          <p>Manually override signal timing and active lane state</p>
+        </div>
+        <div class="signal-control-grid">
+          <div class="ctrl-card glass">
+            <h3>Current Signal State</h3>
+            <div class="big-tl" id="adminTL">
+              <div class="big-light red"    id="adm-red"></div>
+              <div class="big-light yellow" id="adm-yellow"></div>
+              <div class="big-light green"  id="adm-green"></div>
+            </div>
+            <select id="signalColorSel" class="ctrl-select" onchange="previewSignal(this.value)">
+              <option value="green">🟢 Green</option>
+              <option value="yellow">🟡 Yellow</option>
+              <option value="red">🔴 Red</option>
+            </select>
+          </div>
+          <div class="ctrl-card glass">
+            <h3>Timing Configuration</h3>
+            <div class="form-group">
+              <label>🟢 Green Duration (sec)</label>
+              <input type="number" id="ctrl-green"  min="5" max="120" value="45" class="ctrl-input" />
+            </div>
+            <div class="form-group">
+              <label>🟡 Yellow Duration (sec)</label>
+              <input type="number" id="ctrl-yellow" min="3" max="30"  value="5"  class="ctrl-input" />
+            </div>
+            <div class="form-group">
+              <label>🔴 Red Duration (sec)</label>
+              <input type="number" id="ctrl-red"    min="5" max="120" value="40" class="ctrl-input" />
+            </div>
+            <button class="btn btn-primary w-full" onclick="updateSignal()">💾 Save Signal Config</button>
+          </div>
+          <div class="ctrl-card glass">
+            <h3>Lane Control</h3>
+            <div id="laneControls" class="lane-controls"></div>
+            <button class="btn btn-primary w-full" style="margin-top:16px" onclick="updateLanes()">💾 Update Lanes</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─ LIVE MONITOR ─ -->
+      <section id="sec-monitor" class="admin-section">
+        <div class="section-heading">
+          <h2>Live Traffic Monitor</h2>
+          <p>Full CRUD — add, edit, and delete intersection records</p>
+        </div>
+
+        <!-- Stats bar -->
+        <div id="monitorStats" class="monitor-stats glass"></div>
+
+        <!-- Filter + Action Bar -->
+        <div class="monitor-toolbar glass">
+          <input type="text" class="ctrl-input search-box"
+            placeholder="🔍 Search intersection / zone…"
+            oninput="setSearch(this.value)" />
+          <select class="ctrl-select filter-sel" onchange="setFilter('density', this.value)">
+            <option value="all">All Densities</option>
+            <option value="high">🔴 High</option>
+            <option value="medium">🟡 Medium</option>
+            <option value="low">🟢 Low</option>
+          </select>
+          <select class="ctrl-select filter-sel" onchange="setFilter('zone', this.value)">
+            <option value="all">All Zones</option>
+            <option>Zone A</option><option>Zone B</option>
+            <option>Zone C</option><option>Zone D</option><option>Zone E</option>
+          </select>
+          <button class="btn btn-outline-sm" onclick="fetchAndRenderTraffic()">↻ Refresh</button>
+          <button class="btn btn-outline-sm" onclick="addRandomRecord()">🎲 Add Random</button>
+          <button class="btn btn-primary-sm" onclick="openAddModal()">➕ Add Record</button>
+          <button class="btn btn-outline-sm" onclick="exportCSV()">📥 Export CSV</button>
+        </div>
+
+        <div class="table-card glass">
+          <table id="monitorTable">
+            <thead>
+              <tr>
+                <th>ID</th><th>Intersection</th><th>Zone</th><th>Density</th>
+                <th>Vehicles</th><th>Avg Speed</th><th>Timestamp</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="monitorBody">
+              <tr><td colspan="8" class="loading-row">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ─ AI CONTROL ─ -->
+      <section id="sec-ai" class="admin-section">
+        <div class="section-heading">
+          <h2>AI Control Panel</h2>
+          <p>Manage AI optimization and test predictions</p>
+        </div>
+        <div class="ai-control-grid">
+          <div class="ctrl-card glass">
+            <h3>AI Module Status</h3>
+            <div class="ai-toggle-row">
+              <span>Enable AI Optimization</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="aiToggle" onchange="toggleAI(this.checked)" />
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="ai-status-display" id="aiStatusDisplay">
+              <div class="spinner small"></div>
+              <span>Checking AI status…</span>
+            </div>
+            <div class="form-group" style="margin-top:20px">
+              <label>Test Traffic Density</label>
+              <select id="adminDensity" class="ctrl-select">
+                <option value="low">🟢 Low</option>
+                <option value="medium" selected>🟡 Medium</option>
+                <option value="high">🔴 High</option>
+              </select>
+            </div>
+            <button class="btn btn-primary w-full" onclick="adminPredict()">🤖 Run AI Prediction</button>
+          </div>
+          <div class="ctrl-card glass" id="adminAiResult">
+            <h3>AI Prediction Result</h3>
+            <div class="ai-placeholder">
+              <span style="font-size:2.5rem">🤖</span>
+              <p>Select a density and click Run Prediction</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─ MESSAGES ─ -->
+      <section id="sec-messages" class="admin-section">
+        <div class="section-heading">
+          <h2>User Messages</h2>
+          <p>Contact form submissions from the user panel</p>
+        </div>
+        <div id="messagesContainer" class="messages-grid">
+          <p class="loading-row">Loading messages…</p>
+        </div>
+      </section>
+
+      <!-- ─ SETTINGS ─ -->
+      <section id="sec-settings" class="admin-section">
+        <div class="section-heading">
+          <h2>System Settings</h2>
+          <p>Modify system-wide configuration stored in config.json</p>
+        </div>
+        <div class="settings-grid">
+          <div class="ctrl-card glass">
+            <h3>Traffic Thresholds</h3>
+            <div class="form-group">
+              <label>High Traffic Threshold (vehicles)</label>
+              <input type="number" id="s-high" class="ctrl-input" />
+            </div>
+            <div class="form-group">
+              <label>Medium Traffic Threshold (vehicles)</label>
+              <input type="number" id="s-medium" class="ctrl-input" />
+            </div>
+            <div class="form-group">
+              <label>Max Vehicle Limit</label>
+              <input type="number" id="s-maxVehicle" class="ctrl-input" />
+            </div>
+          </div>
+          <div class="ctrl-card glass">
+            <h3>Timing & Refresh</h3>
+            <div class="form-group">
+              <label>Auto-refresh Interval (ms)</label>
+              <input type="number" id="s-refresh" class="ctrl-input" step="1000" min="1000" />
+            </div>
+            <div class="form-group">
+              <label>Default Green Time (sec)</label>
+              <input type="number" id="s-green" class="ctrl-input" />
+            </div>
+            <div class="ai-toggle-row" style="margin-top:14px">
+              <span>Maintenance Mode</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="s-maintenance" />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="saveSettings()" style="margin-top:20px">💾 Save Settings</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

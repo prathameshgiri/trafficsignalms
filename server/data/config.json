@@ -1,0 +1,15 @@
+{
+  "aiEnabled": true,
+  "autoRefreshInterval": 5000,
+  "maxVehicleThreshold": 300,
+  "defaultGreenTime": 45,
+  "defaultYellowTime": 5,
+  "defaultRedTime": 40,
+  "systemVersion": "1.0.0",
+  "maintenanceMode": false,
+  "alertThresholds": {
+    "high": 250,
+    "medium": 150,
+    "low": 0
+  }
+}

@@ -1,0 +1,173 @@
+[
+  {
+    "id": 1774601999531,
+    "intersection": "Whitefield Main",
+    "density": "low",
+    "vehicleCount": 161,
+    "avgSpeed": 25,
+    "timestamp": "2026-03-27T08:59:59.531Z",
+    "zone": "Zone B"
+  },
+  {
+    "id": 1774601999304,
+    "intersection": "Whitefield Main",
+    "density": "high",
+    "vehicleCount": 245,
+    "avgSpeed": 60,
+    "timestamp": "2026-03-27T08:59:59.304Z",
+    "zone": "Zone E"
+  },
+  {
+    "id": 1774601999102,
+    "intersection": "MG Road Junction",
+    "density": "high",
+    "vehicleCount": 230,
+    "avgSpeed": 57,
+    "timestamp": "2026-03-27T08:59:59.102Z",
+    "zone": "Zone A"
+  },
+  {
+    "id": 1774601998905,
+    "intersection": "MG Road Junction",
+    "density": "low",
+    "vehicleCount": 97,
+    "avgSpeed": 48,
+    "timestamp": "2026-03-27T08:59:58.905Z",
+    "zone": "Zone B"
+  },
+  {
+    "id": 1774601998726,
+    "intersection": "Silk Board Junction",
+    "density": "medium",
+    "vehicleCount": 292,
+    "avgSpeed": 11,
+    "timestamp": "2026-03-27T08:59:58.726Z",
+    "zone": "Zone A"
+  },
+  {
+    "id": 1774601998509,
+    "intersection": "Hebbal Flyover",
+    "density": "high",
+    "vehicleCount": 378,
+    "avgSpeed": 61,
+    "timestamp": "2026-03-27T08:59:58.509Z",
+    "zone": "Zone B"
+  },
+  {
+    "id": 1774601997941,
+    "intersection": "Silk Board Junction",
+    "density": "medium",
+    "vehicleCount": 358,
+    "avgSpeed": 52,
+    "timestamp": "2026-03-27T08:59:57.941Z",
+    "zone": "Zone D"
+  },
+  {
+    "id": 1774601996467,
+    "intersection": "Whitefield Main",
+    "density": "high",
+    "vehicleCount": 163,
+    "avgSpeed": 10,
+    "timestamp": "2026-03-27T08:59:56.467Z",
+    "zone": "Zone B"
+  },
+  {
+    "id": 1774601995297,
+    "intersection": "Marathahalli Bridge",
+    "density": "low",
+    "vehicleCount": 385,
+    "avgSpeed": 11,
+    "timestamp": "2026-03-27T08:59:55.297Z",
+    "zone": "Zone D"
+  },
+  {
+    "id": 1774601993937,
+    "intersection": "Outer Ring Road",
+    "density": "medium",
+    "vehicleCount": 179,
+    "avgSpeed": 19,
+    "timestamp": "2026-03-27T08:59:53.937Z",
+    "zone": "Zone B"
+  },
+  {
+    "id": 1774601992004,
+    "intersection": "Marathahalli Bridge",
+    "density": "medium",
+    "vehicleCount": 50,
+    "avgSpeed": 37,
+    "timestamp": "2026-03-27T08:59:52.004Z",
+    "zone": "Zone A"
+  },
+  {
+    "id": 1774601976330,
+    "intersection": "MG Road Junction",
+    "density": "low",
+    "vehicleCount": 304,
+    "avgSpeed": 50,
+    "timestamp": "2026-03-27T08:59:36.330Z",
+    "zone": "Zone D"
+  },
+  {
+    "id": 1774601975256,
+    "intersection": "Outer Ring Road",
+    "density": "high",
+    "vehicleCount": 349,
+    "avgSpeed": 37,
+    "timestamp": "2026-03-27T08:59:35.256Z",
+    "zone": "Zone C"
+  },
+  {
+    "id": 1774601969572,
+    "intersection": "MG Road Junction",
+    "density": "low",
+    "vehicleCount": 167,
+    "avgSpeed": 51,
+    "timestamp": "2026-03-27T08:59:29.572Z",
+    "zone": "Zone C"
+  },
+  {
+    "id": 1,
+    "intersection": "MG Road & Brigade Road",
+    "density": "high",
+    "vehicleCount": 312,
+    "avgSpeed": 18,
+    "timestamp": "2026-03-27T08:00:00Z",
+    "zone": "Zone A"
+  },
+  {
+    "id": 2,
+    "intersection": "Outer Ring Road & Sarjapur",
+    "density": "medium",
+    "vehicleCount": 184,
+    "avgSpeed": 35,
+    "timestamp": "2026-03-27T08:05:00Z",
+    "zone": "Zone B"
+  },
+  {
+    "id": 3,
+    "intersection": "Silk Board Junction",
+    "density": "high",
+    "vehicleCount": 427,
+    "avgSpeed": 12,
+    "timestamp": "2026-03-27T08:10:00Z",
+    "zone": "Zone C"
+  },
+  {
+    "id": 4,
+    "intersection": "Hebbal Flyover",
+    "density": "low",
+    "vehicleCount": 89,
+    "avgSpeed": 55,
+    "timestamp": "2026-03-27T08:15:00Z",
+    "zone": "Zone D"
+  },
+  {
+    "id": 5,
+    "intersection": "Whitefield Main Road",
+    "density": "medium",
+    "vehicleCount": 218,
+    "avgSpeed": 28,
+    "timestamp": "2026-03-27T08:20:00Z",
+    "zone": "Zone E"
+  }
+]

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Traffic Signal Control System</title>
+  <meta name="description" content="AI-powered Smart Traffic Signal Control System — real-time traffic optimization, live signal status, and AI predictions for smarter cities." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="light-mode">
+
+  <!-- ── Loader ── -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="traffic-light-loader">
+        <div class="tl-red pulse"></div>
+        <div class="tl-yellow"></div>
+        <div class="tl-green"></div>
+      </div>
+      <p>Loading Smart Traffic System…</p>
+    </div>
+  </div>
+
+  <!-- ── Toast Container ── -->
+  <div id="toast-container" aria-live="polite"></div>
+
+  <!-- ── Navigation ── -->
+  <nav id="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">🚦</span>
+      <span>SmartTraffic</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#dashboard">Dashboard</a></li>
+      <li><a href="#signal">Signal</a></li>
+      <li><a href="#ai">AI</a></li>
+      <li><a href="#map">Map</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button id="darkToggle" class="icon-btn" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+      <a href="http://localhost:3001" class="btn btn-primary" target="_blank">Admin Panel</a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- ── Mobile Menu ── -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home">Home</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#signal">Signal</a>
+    <a href="#ai">AI</a>
+    <a href="#map">Map</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="home" class="hero">
+    <div class="hero-bg">
+      <div class="wave wave1"></div>
+      <div class="wave wave2"></div>
+      <div class="wave wave3"></div>
+    </div>
+
+    <div class="hero-content">
+      <span class="hero-badge">AI-Powered System</span>
+      <h1 class="hero-title">Smart Traffic Signal<br /><span class="gradient-text">Control System</span></h1>
+      <p class="hero-subtitle">Revolutionizing urban mobility with artificial intelligence. Real-time optimization, intelligent signal management, and zero congestion cities.</p>
+      <div class="hero-btns">
+        <a href="#dashboard" class="btn btn-primary btn-lg">View Dashboard</a>
+        <a href="#ai" class="btn btn-outline btn-lg">AI Predictions</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-pill">
+          <span class="stat-num" id="heroVehicles">0</span>
+          <span>Vehicles Tracked</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">AI</span>
+          <span>Powered</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">Real</span>
+          <span>-Time Data</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero Traffic Light -->
+    <div class="hero-tl">
+      <div class="tl-pole"></div>
+      <div class="tl-box" id="heroTL">
+        <div class="tl-light red"  id="hl-red"></div>
+        <div class="tl-light yellow" id="hl-yellow"></div>
+        <div class="tl-light green" id="hl-green"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LIVE TRAFFIC DASHBOARD ═══ -->
+  <section id="dashboard">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">📊 Live Data</span>
+        <h2>Traffic Dashboard</h2>
+        <p>Real-time traffic conditions across major intersections</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card glass">
+          <div class="stat-icon high">🔴</div>
+          <div class="stat-info">
+            <p>High Traffic Zones</p>
+            <h3 id="highCount">—</h3>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon medium">🟡</div>
+          <div class="stat-info">
+            <p>Medium Traffic Zones</p>
+            <h3 id="mediumCount">—</h3>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon low">🟢</div>
+          <div class="stat-info">
+            <p>Low Traffic Zones</p>
+            <h3 id="lowCount">—</h3>
+          </div>
+        </div>
+        <div class="stat-card glass">
+          <div class="stat-icon total">📍</div>
+          <div class="stat-info">
+            <p>Total Intersections</p>
+            <h3 id="totalCount">—</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-section glass">
+        <h3>Vehicle Count by Intersection</h3>
+        <div class="chart-wrap">
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Traffic Table -->
+      <div class="table-card glass">
+        <div class="table-header-row">
+          <h3>Intersection Details</h3>
+          <span class="live-badge">🔴 LIVE</span>
+        </div>
+        <div class="table-scroll">
+          <table id="trafficTable">
+            <thead>
+              <tr>
+                <th>Intersection</th>
+                <th>Zone</th>
+                <th>Density</th>
+                <th>Vehicles</th>
+                <th>Avg Speed</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody id="trafficTableBody">
+              <tr><td colspan="6" class="loading-row">Loading data…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SIGNAL STATUS ═══ -->
+  <section id="signal" class="alt-bg">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">🚦 Real-Time</span>
+        <h2>Signal Status</h2>
+        <p>Current traffic signal state and lane conditions</p>
+      </div>
+
+      <div class="signal-layout">
+        <!-- Big Traffic Light -->
+        <div class="big-tl-wrap glass">
+          <h3>Current Signal</h3>
+          <div class="big-tl" id="bigTL">
+            <div class="big-light red"    id="sig-red"></div>
+            <div class="big-light yellow" id="sig-yellow"></div>
+            <div class="big-light green"  id="sig-green"></div>
+          </div>
+          <div class="countdown-wrap">
+            <p>Next change in</p>
+            <div class="countdown" id="countdown">--</div>
+            <p>seconds</p>
+          </div>
+          <div class="signal-label" id="signalLabel">Loading…</div>
+        </div>
+
+        <!-- Timing Info -->
+        <div class="timing-info">
+          <div class="timing-card glass">
+            <div class="timing-icon red-dot"></div>
+            <div>
+              <p>Red Duration</p>
+              <h3 id="redDuration">-- sec</h3>
+            </div>
+          </div>
+          <div class="timing-card glass">
+            <div class="timing-icon yellow-dot"></div>
+            <div>
+              <p>Yellow Duration</p>
+              <h3 id="yellowDuration">-- sec</h3>
+            </div>
+          </div>
+          <div class="timing-card glass">
+            <div class="timing-icon green-dot"></div>
+            <div>
+              <p>Green Duration</p>
+              <h3 id="greenDuration">-- sec</h3>
+            </div>
+          </div>
+          <div class="timing-card glass ai-card">
+            <div class="timing-icon ai-dot">🧠</div>
+            <div>
+              <p>AI Control</p>
+              <h3 id="aiStatus">Checking…</h3>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lane Visualization -->
+        <div class="lane-grid glass">
+          <h3>Lane Status</h3>
+          <div class="intersection-viz">
+            <div class="lane-cell top"   id="lane-N"><span class="lane-label">North</span><span class="lane-count" id="lv-N">—</span></div>
+            <div class="lane-cell center"></div>
+            <div class="lane-cell left"  id="lane-W"><span class="lane-label">West</span><span class="lane-count" id="lv-W">—</span></div>
+            <div class="lane-cell mid-center">+</div>
+            <div class="lane-cell right" id="lane-E"><span class="lane-label">East</span><span class="lane-count" id="lv-E">—</span></div>
+            <div class="lane-cell center"></div>
+            <div class="lane-cell bottom" id="lane-S"><span class="lane-label">South</span><span class="lane-count" id="lv-S">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ AI PREDICTION ═══ -->
+  <section id="ai">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">🧠 Intelligence</span>
+        <h2>AI Traffic Prediction</h2>
+        <p>Machine learning powered optimization suggestions</p>
+      </div>
+
+      <div class="ai-layout">
+        <div class="ai-input-card glass">
+          <h3>Get AI Prediction</h3>
+          <p>Select current traffic density to receive an optimized signal timing recommendation.</p>
+          <div class="density-selector">
+            <button class="density-btn" id="d-low"    onclick="getAIPrediction('low')">🟢 Low</button>
+            <button class="density-btn active" id="d-medium" onclick="getAIPrediction('medium')">🟡 Medium</button>
+            <button class="density-btn" id="d-high"   onclick="getAIPrediction('high')">🔴 High</button>
+          </div>
+          <button class="btn btn-primary w-full" onclick="getAIPrediction(currentDensity)" id="predictBtn">
+            🤖 Get AI Prediction
+          </button>
+        </div>
+
+        <div class="ai-result-card glass" id="aiResultCard">
+          <div class="ai-loading" id="aiLoading" style="display:none;">
+            <div class="spinner"></div>
+            <p>Analyzing traffic patterns…</p>
+          </div>
+          <div id="aiResult">
+            <div class="ai-placeholder">
+              <span>🤖</span>
+              <p>Select a density level and click "Get AI Prediction"</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live AI Suggestions -->
+      <div class="ai-suggestions glass">
+        <h3>⚡ Live Optimization Feed</h3>
+        <div id="suggestionFeed" class="suggestion-feed">
+          <p class="placeholder-msg">Live suggestions will appear here…</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TRAFFIC MAP ═══ -->
+  <section id="map" class="alt-bg">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">📍 Visualization</span>
+        <h2>Traffic Congestion Map</h2>
+        <p>Visual overview of city-wide traffic conditions</p>
+      </div>
+
+      <div class="map-layout">
+        <div class="map-canvas-wrap glass">
+          <canvas id="trafficMap" width="600" height="400"></canvas>
+          <div class="map-legend">
+            <span class="legend-dot red"></span> High
+            <span class="legend-dot yellow"></span> Medium
+            <span class="legend-dot green"></span> Low
+          </div>
+        </div>
+        <div class="map-sidebar">
+          <div class="zone-card glass" id="zonesContainer">
+            <p>Loading zones…</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ABOUT ═══ -->
+  <section id="about">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">ℹ️ Info</span>
+        <h2>About the System</h2>
+        <p>Understanding the transition from static to dynamic traffic control</p>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-card glass">
+          <div class="about-icon">🚦</div>
+          <h3>Smart Traffic Signal Control System</h3>
+          <p>The Smart Traffic Signal Control System is a modern, AI-powered platform designed to tackle urban traffic congestion. Instead of relying on blind timers, this system continuously monitors live vehicle density across city intersections. By utilizing real-time data and artificial intelligence, it actively coordinates signal timings to ensure a continuous and smooth flow of traffic, significantly reducing wait times and vehicular emissions.</p>
+        </div>
+
+        <div class="about-card glass">
+          <div class="about-icon">⚠️</div>
+          <h3>The Current Signal Changing Problem</h3>
+          <p>Traditional traffic lights operate on rigid, hardcoded timers. This creates the "Current Signal Changing Problem" — a major cause of urban bottlenecking. When a signal is fixed, it might grant 60 seconds of green light to an empty street while forcing hundreds of vehicles on an intersecting road to wait unnecessarily. This lack of adaptability leads to severe traffic jams during rush hours, increased fuel consumption, and driver frustration.</p>
+        </div>
+
+        <div class="about-card glass">
+          <div class="about-icon">🧠</div>
+          <h3>Our Intelligent Solution</h3>
+          <p>We solve the static timing problem by introducing an intelligent prediction module. Based on live traffic density reports (Low, Medium, High), the system automatically allocates proportionate green light durations. If an intersection experiences high traffic, the green light duration is dynamically extended; if a lane is empty, the signal quickly shifts to accommodate other busy roads, drastically improving city-wide mobility.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section id="contact" class="alt-bg">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">📩 Get In Touch</span>
+        <h2>Contact Us</h2>
+        <p>Report a signal issue or share your feedback</p>
+      </div>
+
+      <div class="contact-layout">
+        <form class="contact-form glass" id="contactForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cName">Your Name *</label>
+              <input type="text" id="cName" name="name" placeholder="Rahul Sharma" required />
+            </div>
+            <div class="form-group">
+              <label for="cEmail">Email Address *</label>
+              <input type="email" id="cEmail" name="email" placeholder="rahul@example.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="cSubject">Subject</label>
+            <input type="text" id="cSubject" name="subject" placeholder="Signal timing issue on MG Road" />
+          </div>
+          <div class="form-group">
+            <label for="cMessage">Message *</label>
+            <textarea id="cMessage" name="message" rows="5" placeholder="Describe the issue in detail…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-full" id="submitBtn">
+            📨 Send Message
+          </button>
+        </form>
+
+        <div class="contact-info">
+          <div class="info-card glass">
+            <span class="info-icon">📍</span>
+            <div>
+              <h4>Location</h4>
+              <p>Smart City Traffic Control Centre, Bengaluru, Karnataka</p>
+            </div>
+          </div>
+          <div class="info-card glass">
+            <span class="info-icon">📞</span>
+            <div>
+              <h4>Emergency Helpline</h4>
+              <p>+91 80-1234-5678</p>
+            </div>
+          </div>
+          <div class="info-card glass">
+            <span class="info-icon">✉️</span>
+            <div>
+              <h4>Email</h4>
+              <p>support@smarttraffic.gov.in</p>
+            </div>
+          </div>
+          <div class="info-card glass">
+            <span class="info-icon">🕒</span>
+            <div>
+              <h4>System Uptime</h4>
+              <p id="uptime">Calculating…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-brand">🚦 SmartTraffic</div>
+        <p>AI-Powered Urban Traffic Management</p>
+      </div>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#dashboard">Dashboard</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-copy">
+        © 2026 Smart Traffic Signal Control System · Developed by Divya Swami
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

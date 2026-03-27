@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1774605638835,
+    "name": "Prathamesh Giri",
+    "email": "prathameshgiri8607@gmail.com",
+    "subject": "test",
+    "message": "test",
+    "timestamp": "2026-03-27T10:00:38.835Z",
+    "read": false
+  },
+  {
+    "id": 1,
+    "name": "Rahul Sharma",
+    "email": "rahul@example.com",
+    "subject": "Signal Timing Issue",
+    "message": "The signal at MG Road stays red for too long during peak hours.",
+    "timestamp": "2026-03-26T10:30:00Z",
+    "read": false
+  },
+  {
+    "id": 2,
+    "name": "Priya Patel",
+    "email": "priya@example.com",
+    "subject": "Great System!",
+    "message": "The AI optimization has really improved traffic flow in my area.",
+    "timestamp": "2026-03-26T14:15:00Z",
+    "read": true
+  }
+]
